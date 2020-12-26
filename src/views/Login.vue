@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import service from '../service';
+import {asyncRouters} from '../router/index'
   export default {
     data() {
       var checkAge = (rule, value, callback) => {
@@ -81,10 +83,46 @@
     methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
+
+          if (valid) {         
+          let params=Object.assign({},this.ruleForm)
+          // service操作是无效的
+          service.login(params).then(res=>{
+            let {code,msg='',result={}}=res['data']
+            if (code===0) {
+              // 缓存
+              sessionStorage.setItem('name',this.ruleForm.age)
+              sessionStorage.setItem('pass',this.ruleForm.pass)
+              // 路由转化
+              console.log('111');
+              this.$router.push('/dashboard')
+
+              // store 操作
+            }else{
+              // err message
+              this.$message({
+                message: msg,
+                type: 'error',
+                duration: 1000
+              })
+              console.log(err);
+            }
+            this.logining=false
+          }).catch(err=>{
+            // err message
+               this.$message({
+              message: 'error submit!!',
+              type: 'error',
+              duration: 1000
+          })
+          })
           } else {
             console.log('error submit!!');
+            this.$message({
+            message: 'error submit!!',
+            type: 'error',
+            duration: 1000
+          })
             return false;
           }
         });

@@ -23,7 +23,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import service from '../service/index.ts'
+import service from '../service/index'
 Vue.use(VueAxios, axios)
   export default {
     data() {

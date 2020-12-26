@@ -4,11 +4,17 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 Vue.use(VueRouter)
-
 const routes = [{
         path: '/',
         name: 'Home',
+        redirect: '/dashboad',
         component: Home,
+        children: [{
+            path: '/dashboard',
+            name: '首页',
+            component: () =>
+                import ('../views/Dashboard/index.vue')
+        }]
     },
     {
         path: '/about',
